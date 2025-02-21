@@ -1,0 +1,137 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Missing Numbers API",
+    "version": "1.0.0",
+    "description": "API to find two missing numbers in a sorted sequence.\n\n**Endpoint /find-missing**: Accepts a sequence. Full range is [1, sequence.length + 2]. Default sequence: [1, 2, 4, 5, 6, 8, 9, 10].\n\n**Endpoint /simulate-missing**: Accepts an upperBound and a missingNumbers array. The server generates a sequence from 1 to upperBound with the specified numbers missing, then finds the missing numbers. Example: upperBound = 100002, missingNumbers = [12345, 67890]."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "paths": {
+    "/find-missing": {
+      "post": {
+        "summary": "Find missing numbers from a sequence",
+        "description": "Accepts a sequence. Full range is [1, sequence.length + 2]. Default sequence: [1, 2, 4, 5, 6, 8, 9, 10].",
+        "requestBody": {
+          "description": "Input: an array of numbers and an optional algorithm.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sequence": {
+                    "type": "array",
+                    "items": { "type": "number" },
+                    "example": [1, 2, 4, 5, 6, 8, 9, 10]
+                  },
+                  "algorithm": {
+                    "type": "string",
+                    "enum": ["binary", "binary_golden"],
+                    "default": "binary"
+                  }
+                },
+                "required": ["sequence"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Missing numbers found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "missingNumbers": {
+                      "type": "array",
+                      "items": { "type": "number" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "error": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/simulate-missing": {
+      "post": {
+        "summary": "Simulate a sequence and find missing numbers",
+        "description": "Accepts an upperBound and a missingNumbers array. The server generates a sequence from 1 to upperBound with the specified numbers missing, then finds the missing numbers.",
+        "requestBody": {
+          "description": "Input: upperBound, missingNumbers array, and an optional algorithm.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "upperBound": {
+                    "type": "number",
+                    "example": 100002
+                  },
+                  "missingNumbers": {
+                    "type": "array",
+                    "items": { "type": "number" },
+                    "example": [12345, 67890]
+                  },
+                  "algorithm": {
+                    "type": "string",
+                    "enum": ["binary", "binary_golden"],
+                    "default": "binary"
+                  }
+                },
+                "required": ["upperBound", "missingNumbers"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Missing numbers found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "missingNumbers": {
+                      "type": "array",
+                      "items": { "type": "number" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "error": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
