@@ -51,20 +51,16 @@ export class NumberController {
     try {
       const { upperBound, missingNumbers, algorithm } = req.body;
       if (typeof upperBound !== "number" || !Array.isArray(missingNumbers)) {
-        res
-          .status(400)
-          .json({
-            error:
-              'Invalid input data. "upperBound" must be a number and "missingNumbers" must be an array.',
-          });
+        res.status(400).json({
+          error:
+            'Invalid input data. "upperBound" must be a number and "missingNumbers" must be an array.',
+        });
         return;
       }
       if (missingNumbers.length !== 2) {
-        res
-          .status(400)
-          .json({
-            error: '"missingNumbers" array must contain exactly 2 numbers.',
-          });
+        res.status(400).json({
+          error: '"missingNumbers" array must contain exactly 2 numbers.',
+        });
         return;
       }
       // Use virtual sequence to avoid allocating huge arrays in memory
